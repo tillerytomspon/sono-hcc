@@ -1,0 +1,4 @@
+numpy
+Pillow
+torch
+pydicom>=3,<4

@@ -1,0 +1,60 @@
+{
+  "overall_status": "PARTIALLY_VERIFIED",
+  "checks": [
+    {
+      "name": "official_pretrained_models",
+      "status": "BLOCKED",
+      "evidence": "Required model weights and transformers library unavailable; CPU only."
+    },
+    {
+      "name": "clinical_data_and_full_training",
+      "status": "BLOCKED",
+      "evidence": "Source images, profiles, exact splits and four A100 GPUs unavailable."
+    },
+    {
+      "name": "full_paper_fidelity",
+      "status": "FAIL",
+      "evidence": "Methods and implementation gaps and contradictions are itemized in claim_to_code.json."
+    },
+    {
+      "name": "4500_effective_lines",
+      "status": "FAIL",
+      "evidence": "Meaningful implemented code is shorter; no filler or duplicated code was added."
+    },
+    {
+      "name": "deployment_inference",
+      "status": "NOT_RUN",
+      "evidence": "Not included as requested."
+    },
+    {
+      "name": "smc_official_archive_index",
+      "status": "PASS",
+      "evidence": "Official archive central directory inspected; 5385 all-image and 2656 clean split images were matched to original patient folders by filename."
+    },
+    {
+      "name": "smc_official_partition_patient_isolation",
+      "status": "FAIL",
+      "evidence": "Matching indicates 643 patient folders spanning all-image source partitions and 344 spanning clean source partitions; official counts differ from the manuscript."
+    },
+    {
+      "name": "smc_doi_records",
+      "status": "PASS",
+      "evidence": "Both official records list the same dataset title, archive size and publisher-supplied MD5; complete archives were not downloaded or compared."
+    },
+    {
+      "name": "smc_official_image_preprocessing",
+      "status": "PASS",
+      "evidence": "One official image was read and resized to the model input shape."
+    },
+    {
+      "name": "full_training_and_external_cohorts",
+      "status": "NOT_RUN",
+      "evidence": "The full pretrained model, paper-specific cohort assignments and clinical profiles were unavailable."
+    }
+  ],
+  "limitations": [
+    "No clinical use or reported paper performance has been validated.",
+    "The manuscript omits details needed to recreate the full clinical profile sampling and stage-one objective.",
+    "Official SMC source partitions differ from the manuscript and are rejected because patient-folder matching indicates cross-partition overlap."
+  ]
+}

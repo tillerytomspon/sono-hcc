@@ -1,0 +1,52 @@
+{
+  "smc_lud": {
+    "source_release": "Figshare SMC-LUD archive, 1,328,048,074 bytes; publisher-reported MD5 03b28af94e37c4ae9b27024654aaf91e",
+    "usage_restriction": "Non-commercial research use only according to the dataset record and source publication; follow the dataset terms and attribution requirements.",
+    "directory_structure": "original_data/<class>/<variant>/<patient>/<image>; split_for_train/<split>/<class>/<image>; clean_ver_for_train/<split>_clean/<class>/<image>",
+    "source_partition": {
+      "all": {
+        "train": 3769,
+        "val": 1076,
+        "test": 540
+      },
+      "clean": {
+        "train": 1858,
+        "val": 530,
+        "test": 268
+      }
+    },
+    "paper_partition_claim": {
+      "train": 3231,
+      "val": 808,
+      "test": 1346
+    },
+    "limitations": [
+      "Source partitions do not match the manuscript partition counts.",
+      "Patient folders linked by image filename indicate source patients in multiple source partitions; the preparation command rejects patient leakage.",
+      "The exact manuscript patient assignment and clinical profiles are unavailable; a replacement partition is not the manuscript partition unless independently verified.",
+      "A deterministic patient token is derived from the class and original patient folder; these tokens are identifiers for partition checking, not proof of anonymization."
+    ],
+    "audit_command": "python code/dataset_tool.py audit-smc DATA_ROOT --subset all --patients PATIENTS.csv",
+    "preparation_command": "python code/dataset_tool.py prepare-smc DATA_ROOT --subset all --profiles PROFILES.csv --patient-split PATIENTS.csv --output DATA_ROOT/manifest.jsonl",
+    "patient_table": "Audit exports patient, label, images and a blank split column; populate split with train, val or test based on an independently documented assignment.",
+    "profile_table": "CSV columns image and text; image is the complete relative path under the data root, and exactly one profile from a documented source is required per image."
+  },
+  "tcia": {
+    "source_release": "B-mode-and-CEUS-Liver version 2; source lists 120 subjects and DICOM images under CC BY 4.0 with data citation required.",
+    "selection_table": "CSV next to or above the DICOM files with columns image, patient, frame, label, text, b_mode_confirmed. Image is a relative path, frame is zero-based, label is 1 for HCC and 0 otherwise, and b_mode_confirmed must be yes.",
+    "limitations": [
+      "The manuscript's 118-subject, 583-frame selection and frame-level labels have not been supplied or independently reconstructed.",
+      "The B-mode confirmation and reference diagnosis must be established from source metadata or reviewed annotations; the code does not infer them from an unspecified mechanical-index threshold.",
+      "Only single-channel DICOM frames are supported. A per-frame linear min-max conversion to 8-bit is an engineering default not specified by the manuscript; color frames are rejected and dual-panel images require manual review.",
+      "No TCIA DICOM instance or exact manuscript selection was available for verification."
+    ]
+  },
+  "chulabhorn": {
+    "access": "The paper describes data available on request; source files and selection metadata have not been provided.",
+    "status": "BLOCKED"
+  },
+  "clinical_profiles": {
+    "status": "BLOCKED",
+    "reason": "The paper does not provide the joint sampling distributions, translations, or image-profile assignments."
+  }
+}

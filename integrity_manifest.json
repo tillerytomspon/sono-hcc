@@ -1,0 +1,71 @@
+{
+  "overall_status": "PARTIALLY_VERIFIED",
+  "python_physical_lines": 581,
+  "effective_line_requirement_status": "FAIL",
+  "static_privacy_pattern_check": "PASS",
+  "static_privacy_pattern_findings": [],
+  "markdown_files": 0,
+  "checks_limits": "Pattern checks do not establish the absence of every possible identifier.",
+  "files": [
+    {
+      "path": "claim_to_code.json",
+      "sha256": "893e82d8bb022e7614394dac0e7db16d83289ad5de32a8f17e7f8d17584fd248",
+      "bytes": 8904
+    },
+    {
+      "path": "code/data.py",
+      "sha256": "ca3f05d8d27c6b2c58281c7fd5def66d69237a17eb25aeb4dbfae5d780b1977c",
+      "bytes": 4383
+    },
+    {
+      "path": "code/dataset_tool.py",
+      "sha256": "67f9dd89ed7a286f92a77f59e9d18516aa7e4ffd6f2309bbca3d6eca054a6cdc",
+      "bytes": 1752
+    },
+    {
+      "path": "code/metrics.py",
+      "sha256": "2911393ea1612341aa13216ca08b8e293b28ed69c937876cc80fb170d88c013f",
+      "bytes": 3056
+    },
+    {
+      "path": "code/model.py",
+      "sha256": "ca9f57df397a9c395ff2f56f8eec597ff8fc114160ce89a29e8ec33561b01ba1",
+      "bytes": 4222
+    },
+    {
+      "path": "code/requirements.txt",
+      "sha256": "0aec1a83fe008079ff8e3b63e10d2e42ffe4981935e869dc40b76c1391586ef8",
+      "bytes": 33
+    },
+    {
+      "path": "code/smc_lud.py",
+      "sha256": "c18411e1f1ce78227f8881f94089017802792b31bed1edd6ed011d8416099892",
+      "bytes": 5309
+    },
+    {
+      "path": "code/tcia.py",
+      "sha256": "a0371f4b701392305b3f7c0b5f69769262fd6dc83194b6b28af6659361518c4a",
+      "bytes": 3371
+    },
+    {
+      "path": "code/training.py",
+      "sha256": "44d8031112697880968f28882f53863ee1098eac8fc8ffcbfb2ecf13b8f75a7f",
+      "bytes": 4354
+    },
+    {
+      "path": "dataset_urls.txt",
+      "sha256": "c67c031d95166d4cdd9caf079651efc94a0e3ebcb60c1ee75fb534ac7bc12e13",
+      "bytes": 432
+    },
+    {
+      "path": "dataset_usage.json",
+      "sha256": "85634b6d3381526722ce127bbc45742ea226fca2049e3589141d3253bd053920",
+      "bytes": 3497
+    },
+    {
+      "path": "verification_report.json",
+      "sha256": "1efc6be509685c6fbf05895baa765ebfb0149da6632f4a7f51d09d22b31dfe7e",
+      "bytes": 2398
+    }
+  ]
+}

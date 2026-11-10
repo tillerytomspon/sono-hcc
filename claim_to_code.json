@@ -1,0 +1,219 @@
+{
+  "overall_status": "PARTIALLY_VERIFIED",
+  "claims": [
+    {
+      "id": "input_images",
+      "paper_location": "Methods 4.2",
+      "claim": "Resize RGB to 224 by 224 with bilinear interpolation; ImageNet channel normalisation; training flip, rotation and brightness/contrast jitter; no crop.",
+      "code": [
+        "code/data.py:image_tensor"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "One official image was read and resized; augmentation and full-cohort preprocessing have not been verified."
+    },
+    {
+      "id": "patient_partition",
+      "paper_location": "Methods 4.2",
+      "claim": "Patient-level split; manuscript reports 3231, 808, and 1346 images.",
+      "code": [
+        "code/smc_lud.py:index_paths",
+        "code/smc_lud.py:prepare",
+        "code/data.py:validate_patient_splits"
+      ],
+      "status": "FAIL",
+      "evidence": "Official archive filename matching links 643 patients across the all-image source partitions and 344 across the clean partitions; counts also differ from manuscript. Preparation rejects leakage and requires an externally verified patient assignment."
+    },
+    {
+      "id": "clinical_profiles",
+      "paper_location": "Methods 4.2",
+      "claim": "Six clinical fields sampled from database-derived joint distributions and translated into five languages.",
+      "code": [
+        "code/smc_lud.py:read_profile_table",
+        "code/data.py:UltrasoundDataset"
+      ],
+      "status": "BLOCKED",
+      "evidence": "Preparation requires externally supplied image-level text. Manuscript joint distributions, translations and image-profile assignments are unavailable."
+    },
+    {
+      "id": "external_cohorts",
+      "paper_location": "Methods 4.2",
+      "claim": "HCC versus all others; external test cohorts held out.",
+      "code": [
+        "code/tcia.py:read_selection",
+        "code/tcia.py:dicom_frame",
+        "code/tcia.py:TciaDataset"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "The manuscript selection, TCIA DICOM instances, and Chulabhorn files were not available."
+    },
+    {
+      "id": "vision",
+      "paper_location": "Methods 4.3",
+      "claim": "DINOv2 ViT-B/14 yields 256 patch tokens of width 768 at 224 resolution.",
+      "code": [
+        "code/model.py:MultimodalModel.forward"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "Backbone must be supplied externally; real pretrained backbone has not been loaded."
+    },
+    {
+      "id": "alignment",
+      "paper_location": "Methods 4.3 equation 1",
+      "claim": "Two linear layers with GELU project image tokens; visual tokens precede text tokens.",
+      "code": [
+        "code/model.py:MultimodalModel"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "Full pretrained backbones have not been validated; projection hidden width is unspecified in the manuscript."
+    },
+    {
+      "id": "classifier",
+      "paper_location": "Methods 4.3 equation 2",
+      "claim": "A linear head maps the last text position to a binary logit.",
+      "code": [
+        "code/model.py:MultimodalModel.forward"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "The full language backbone has not been validated; the caller must supply EOS in each text."
+    },
+    {
+      "id": "vision_adaptation",
+      "paper_location": "Methods 4.4 stage 1",
+      "claim": "20 epochs, masked image modelling at 75 percent; AdamW lr 1e-5, batch 64, weight decay .05, cosine schedule.",
+      "code": [],
+      "status": "BLOCKED",
+      "evidence": "Reconstruction target, decoder and complete source pool not specified; not implemented."
+    },
+    {
+      "id": "alignment_training",
+      "paper_location": "Methods 4.4 stage 2",
+      "claim": "Five epochs, frozen vision and language, train projection with next-token loss, AdamW lr .001 and batch 32.",
+      "code": [
+        "code/training.py:configure_stage_two",
+        "code/model.py:joint_loss"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "Parameter configuration available; no stage-two loop or complete optimizer settings were verified."
+    },
+    {
+      "id": "instruction_tuning",
+      "paper_location": "Methods 4.4 stage 3",
+      "claim": "Ten epochs; LoRA rank 64, alpha 128, dropout .05 for query and value; BCE and next-token losses weighted .7/.3.",
+      "code": [
+        "code/model.py:LowRankLinear",
+        "code/model.py:attach_attention_adapters",
+        "code/model.py:joint_loss",
+        "code/training.py:stage_three_step"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "Full schedule, distributed execution and pretrained model have not been verified. Language and classifier learning rates must be supplied because the manuscript omits them."
+    },
+    {
+      "id": "layer_count",
+      "paper_location": "Methods 4.4 and Figure 1",
+      "claim": "Manuscript says all 32 language layers.",
+      "code": [
+        "code/model.py:attach_attention_adapters"
+      ],
+      "status": "FAIL",
+      "evidence": "Official Qwen2.5-7B-Instruct model card states 28 layers. The adapter traverses the actual model layers."
+    },
+    {
+      "id": "optimizer",
+      "paper_location": "Methods 4.4",
+      "claim": "Stage 3 AdamW beta .9/.95, weight decay .1, gradient clipping 1.0, 3 percent warmup and cosine floor 1e-7.",
+      "code": [
+        "code/training.py:configure_stage_three",
+        "code/training.py:stage_three_step"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "Optimizer and gradient clipping implemented; scheduler, accumulation, precision and distributed execution not implemented."
+    },
+    {
+      "id": "seeds",
+      "paper_location": "Methods 4.4",
+      "claim": "Five runs with seeds 42, 137, 256, 1024, 2048.",
+      "code": [
+        "code/training.py:set_seed",
+        "code/training.py:save_state",
+        "code/training.py:load_state"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "RNG state and seed are saved and restored; five full runs not performed."
+    },
+    {
+      "id": "discrimination",
+      "paper_location": "Methods 4.6",
+      "claim": "AUROC; sensitivity at 90 percent specificity; specificity at 90 percent sensitivity; Youden threshold.",
+      "code": [
+        "code/metrics.py:auc",
+        "code/metrics.py:operating_points"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "Clinical operating points have not been verified on the paper data."
+    },
+    {
+      "id": "predictive_values",
+      "paper_location": "Methods 4.6 and Supplementary Table S11",
+      "claim": "PPV and NPV at assumed 5 percent prevalence.",
+      "code": [
+        "code/metrics.py:predictive_values"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "No cohort estimates have been calculated."
+    },
+    {
+      "id": "calibration",
+      "paper_location": "Supplementary Table S7",
+      "claim": "Ten-bin expected calibration error and Brier score.",
+      "code": [
+        "code/metrics.py:calibration"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "Calibration has not been verified on cohort data."
+    },
+    {
+      "id": "decision_curve",
+      "paper_location": "Supplementary Table S12",
+      "claim": "Net benefit TP/N minus FP/N multiplied by threshold odds.",
+      "code": [
+        "code/metrics.py:net_benefit"
+      ],
+      "status": "NOT_RUN",
+      "evidence": "No patient-level decision curve has been computed."
+    },
+    {
+      "id": "other_statistics",
+      "paper_location": "Methods 4.6",
+      "claim": "Confidence intervals, DeLong, Holm correction, McNemar and other subgroup statistics.",
+      "code": [],
+      "status": "NOT_RUN",
+      "evidence": "Not implemented; predictions and paired cohort data absent."
+    },
+    {
+      "id": "baselines_ablations",
+      "paper_location": "Methods 4.5 and Tables 1-18",
+      "claim": "Baseline comparisons, multilingual, clinical field, hyperparameter, subgroup and quantization experiments.",
+      "code": [],
+      "status": "NOT_RUN",
+      "evidence": "No baselines, trained weights or experimental cohort files provided."
+    },
+    {
+      "id": "dataset_doi",
+      "paper_location": "Methods 4.8",
+      "claim": "Manuscript identifies Figshare DOI ending 29755535.",
+      "code": [],
+      "status": "PASS",
+      "evidence": "Both official Figshare records identify SMC-LUD and advertise files with the same size and supplied MD5; byte-for-byte comparison of complete downloads was not performed."
+    }
+  ],
+  "primary_sources": {
+    "qwen_model_card": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
+    "vision_backbone": "https://github.com/facebookresearch/dinov2",
+    "smc_data_publication": "https://www.nature.com/articles/s41597-026-07023-7"
+  },
+  "notes": [
+    "The manuscript includes Supplementary Tables S1 through S12 within the supplied PDF.",
+    "Statuses describe this implementation, not the truth of reported clinical results."
+  ]
+}
